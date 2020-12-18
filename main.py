@@ -1,2 +1,2 @@
-# import main_controller
-# main_controller.DisplayMainMenu()
+import main_controller
+main_controller.DisplayMainMenu()

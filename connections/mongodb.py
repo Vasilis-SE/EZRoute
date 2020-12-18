@@ -5,7 +5,7 @@ from datetime import datetime
 class MongoDB() :
 
     def __init__(self):
-        self._mongo_client = pymongo.MongoClient("mongodb://localhost:27017/")
+        self._mongo_client = MongoClient("mongodb://localhost:27017/")
 
     def connect_to_modes(self):
         today = datetime.today()
@@ -79,6 +79,25 @@ class MongoDB() :
             LogErrorOnLogFile(
                 "logs/CollectionErrors/"+today.strftime("%d/%m/%Y"),
                 "[" + today.strftime("%H:%M:%S") + "] Could not connect with cities collection! "
+            )
+
+        return collection
+
+    def connect_to_towns(self):
+        today = datetime.today()
+
+        try:
+            database = self._mongo_client["general"]
+            collection = database["towns"]
+        except pymongo.errors.ConnectionFailure as e:
+            LogErrorOnLogFile(
+                "logs/ConnectionErrors/"+today.strftime("%d/%m/%Y"),
+                "[" + today.strftime("%H:%M:%S") + "] Could not connect with general database! "
+            )
+        except pymongo.errors.CollectionInvalid as e:
+            LogErrorOnLogFile(
+                "logs/CollectionErrors/"+today.strftime("%d/%m/%Y"),
+                "[" + today.strftime("%H:%M:%S") + "] Could not connect with towns collection! "
             )
 
         return collection
